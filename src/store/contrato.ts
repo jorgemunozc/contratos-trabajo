@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive } from 'vue'
 
 const store = {
   state: reactive({
@@ -14,6 +14,7 @@ const store = {
       cargoRepLegal: ''
     },
     trabajador: {
+      run: '',
       nombre: '',
       apellidoPaterno: '',
       apellidoMaterno: '',
@@ -29,8 +30,9 @@ const store = {
       direccionLabores: '',
       regionLabores: '',
       comunaLabores: '',
-      horasJornada: 0,//numero positivo no mayor a 24*7
-
+      horasJornada: 0
     }
   })
 }
+
+export default store
