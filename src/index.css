@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input-field {
+    @apply flex flex-col px-2 my-2
+  }
+  .input-field label {
+    @apply text-left
+  }
+
+  .form {
+    @apply bg-red-200 max-w-2xl mx-auto flex flex-wrap px-2 min-h-full
+  }
+}
