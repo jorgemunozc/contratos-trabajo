@@ -30,7 +30,8 @@ const store = {
       direccionLabores: '',
       regionLabores: '',
       comunaLabores: '',
-      horasJornada: 0
+      horasJornada: 0,
+      horario: { normal: [], manTarde: [], manNoche: [], manTardeNoche: [], tardeNoche: [] }
     }
   })
 }
