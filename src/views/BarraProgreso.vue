@@ -1,9 +1,12 @@
 <template>
-  <div class="flex max-w-3xl h-4 border mx-auto my-2">
-    <div v-for="(n, i) in 6" :key="n"
-    class="flex-grow relative" :class="{'bg-green-300': currStep === n}"
+  <div class="flex w-full max-w-3xl h-3 border mx-auto">
+    <div
+      v-for="n in descPasos.length"
+      :key="n"
+      class="flex-grow relative h-full"
+      :class="{'bg-green-300': currStep === n}"
     >
-    <small class="w-full absolute bottom-4 text-xs">{{descPasos[i]}}</small>
+      <small class="w-full absolute bottom-4 text-xs">{{ descPasos[n - 1] }}</small>
     </div>
   </div>
 </template>
@@ -12,7 +15,7 @@ import { defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
-  setup () {
+  setup() {
     const route = useRoute()
     const currNav = route.path.split('/')
     const currStep = ref(parseInt(currNav[currNav.length - 1]))
