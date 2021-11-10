@@ -1,8 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
-import FormDatosRemuneracion from '@/views/FormDatosRemuneracion.vue'
+const FormDatosRemuneracion = () => import('@/views/FormDatosRemuneracion.vue')
+const FormDatosEmpleador = () => import('@/views/FormDatosEmpleador.vue')
+const FormDatosTrabajador = () => import('@/views/FormDatosTrabajador.vue')
+const FormDatosServicios = () => import('@/views/FormDatosServicios.vue')
+const FormDatosJornada = () => import('@/views/FormDatosJornada.vue')
+const GenerarContrato = () => import('@/views/GenerarContrato.vue')
+const ContratoPreview = () => import('@/views/ContratoPreview.vue')
 
+const rutasPasosLlenadoForm = [
+  FormDatosEmpleador,
+  FormDatosTrabajador,
+  FormDatosServicios,
+  FormDatosJornada,
+  FormDatosRemuneracion,
+  ContratoPreview
+]
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -11,33 +25,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/contrato-trabajo',
     name: 'Home',
-    component: () => import('@/views/GenerarContrato.vue'),
-    children: [
-      {
-        path: '1',
-        component: () => import('@/views/FormDatosEmpleador.vue')
-      },
-      {
-        path: '2',
-        component: () => import('@/views/FormDatosTrabajador.vue')
-      },
-      {
-        path: '3',
-        component: () => import('@/views/FormDatosServicios.vue')
-      },
-      {
-        path: '4',
-        component: () => import('@/views/FormDatosJornada.vue')
-      },
-      {
-        path: '5',
-        component: FormDatosRemuneracion
-      }
-    ]
+    component: GenerarContrato,
+    children: crearRutasPasos()
   },
   {
     path: '/test',
-    component: () => import('@/views/FormDatosEmpleador.vue')
+    component: () => import('@/views/ContratoPreview.vue')
   }
 ]
 
@@ -45,5 +38,14 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+function crearRutasPasos():Array<RouteRecordRaw> {
+  return rutasPasosLlenadoForm.map((componente, index): RouteRecordRaw => {
+    return {
+      path: `${index + 1}`,
+      component: componente,
+    }
+  })
+}
 
 export default router
