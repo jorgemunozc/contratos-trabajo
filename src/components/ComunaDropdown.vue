@@ -1,30 +1,55 @@
 <template>
   <select v-model="selectedCom">
-    <option value="">Seleccione Comuna</option>
-    <option v-for="comuna in comunas" :key="comuna.codigo" :value="comuna.codigo">{{comuna.nombre}}</option>
+    <option :value="{}">
+      Seleccione Comuna
+    </option>
+    <option
+      v-for="com in comunas"
+      :key="com.codigo"
+      :value="com"
+    >
+      {{ com.nombre }}
+    </option>
   </select>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { cargarComunas } from '@/services/ComunaService'
 export default defineComponent({
   props: {
     region: {
       type: String,
       default: ''
+    },
+    comuna: {
+      type: Object as PropType<Comuna>,
+      required: true
     }
   },
-  setup (props) {
-    const selectedCom = ref('')
-    const comunas = ref()
+  emits: ['update:comuna'],
+  setup(props, context) {
+    const selectedCom = computed({
+      get: () => props.comuna,
+      set: (nuevaComuna) => {
+        context.emit('update:comuna', nuevaComuna)
+      }
+    })
+    const comunas = ref<Comuna[]>([])
+    if (props.region) {
+      cargarComunas(props.region)
+        .then(
+          (data) => {
+            comunas.value = data
+          }
+        )
+    }
     watch(
       () => props.region,
       async (nuevaRegion) => {
         comunas.value = await cargarComunas(nuevaRegion)
-        selectedCom.value = ''
+        selectedCom.value = {} as Comuna
       }
     )
-    console.log(comunas.value)
     return {
       selectedCom,
       comunas
