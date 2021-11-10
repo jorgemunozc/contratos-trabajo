@@ -5,7 +5,7 @@ interface RegionInfo {
   codigo: string
 }
 
-function cargarRegiones (): Promise<RegionInfo[] | []> {
+function cargarRegiones(): Promise<RegionInfo[] | []> {
   return axios.get<Record<string, string>[]>('https://apis.digital.gob.cl/dpa/regiones')
     .then((response) => {
       const dataRegiones = response.data

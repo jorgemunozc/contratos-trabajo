@@ -4,7 +4,7 @@ export interface ComunaInfo {
   nombre: string
 }
 
-export function cargarComunas (codRegion: string): Promise<ComunaInfo[] | []> {
+export function cargarComunas(codRegion: string): Promise<ComunaInfo[] | []> {
   const url = `https://apis.digital.gob.cl/dpa/regiones/${codRegion}/comunas`
   return axios.get<Record<string, string>[]>(url)
     .then((response) => {
