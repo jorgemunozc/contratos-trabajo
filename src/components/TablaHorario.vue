@@ -1,11 +1,13 @@
 <template>
-  <table class="border bg-gray-300 table-fixed w-full text-sm">
+  <table class="border bg-gray-300 w-full text-sm">
     <thead>
       <tr>
-        <th colspan="9">Distribución de la Jornada de Trabajo ({{ nombreJornada }})</th>
+        <th colspan="8">
+          Distribución de la Jornada de Trabajo ({{ nombreJornada }})
+        </th>
       </tr>
       <tr>
-        <td></td>
+        <td />
         <!-- <td>Todos</td> -->
         <td>Lunes</td>
         <td>Martes</td>
@@ -20,99 +22,152 @@
       <tr>
         <td>Distribución</td>
         <!-- <td class="text-center"><input type="checkbox" name="todos" @change="seleccionarTodos($event.target.checked)"/></td> -->
-        <td v-for="n in 7" :key="n" class="text-center">
-          <input type="checkbox" name="lunes" :value="n - 1" v-model="diasSeleccionados" @change="manejarHorario"/>
+        <td
+          v-for="dia in 7"
+          :key="dia"
+          class="text-center"
+        >
+          <input
+            v-model="diasSeleccionados"
+            type="checkbox"
+            :value="dia"
+          >
         </td>
       </tr>
-      <tr class="border w-full">
+      <tr class="border">
         <td>Hora de Inicio</td>
-        <td v-for="i in 7" :key="i" class="text-center">
-          <select :disabled="!estaSeleccionado(i - 1)" v-model="horario[i-1][0]">
-            <template v-for="(j, k )  in 24" :key="j" >
-              <option :value="k+':00'">{{ k }}:00</option>
-              <option :value="k+':30'">{{ k }}:30</option>
+        <td
+          v-for="i in 7"
+          :key="i"
+          class="text-center"
+        >
+          <select
+            v-model="horario[i][0]"
+            :disabled="!estaDiaSeleccionado(i)"
+          >
+            <template
+              v-for="hora in range(24)"
+              :key="hora"
+            >
+              <option :value="hora+':00'">
+                {{ hora }}:00
+              </option>
+              <option :value="hora+':30'">
+                {{ hora }}:30
+              </option>
             </template>
           </select>
         </td>
       </tr>
       <tr>
         <td>Hora de término</td>
-        <td v-for="i in 7" :key="i" class="text-center">
-          <select :disabled="!estaSeleccionado(i - 1)" v-model="horario[i-1][1]">
-            <template v-for="(j, k )  in 24" :key="j" >
-              <option :value="k+':00'">{{ k }}:00</option>
-              <option :value="k+':30'">{{ k }}:30</option>
+        <td
+          v-for="i in 7"
+          :key="i"
+          class="text-center"
+        >
+          <select
+            v-model="horario[i][1]"
+            :disabled="!estaDiaSeleccionado(i)"
+          >
+            <template
+              v-for="hora in range(24)"
+              :key="hora"
+            >
+              <option :value="hora+':00'">
+                {{ hora }}:00
+              </option>
+              <option :value="hora+':30'">
+                {{ hora }}:30
+              </option>
             </template>
           </select>
         </td>
       </tr>
     </tbody>
   </table>
-  <div>
-    Dias seleccionados: [{{ diasSeleccionados }}]
-  </div>
-  <div>
+  <!-- <div>
+    Dias seleccionados: {{ diasSeleccionados }} <br />
+    horario:
+    <div
+      v-for="(dia, index) in horario"
+      :key="index"
+    >
+      {{ dia }}
+    </div>
+  </div> -->
+  <!-- <div>
     {{horario}}
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts">
 
-import { computed, defineComponent, ref } from 'vue'
-
+import { computed, defineComponent, PropType} from 'vue'
+import { range } from '@/utils/numbers'
+import store from '@/store/contrato'
+import * as Enums from '@/enums'
 export default defineComponent({
   props: {
-    tipoJornada: {
-      type: String,
+    tipoTurno: {
+      type: String as PropType<Turno>,
       required: true
     }
   },
-  setup (props) {
-    const jornada: {[key: string] : string} = {
-      j: 'jornada',
-      m: 'manhana',
-      t: 'tarde',
-      n: 'noche'
+  setup(props) {
+    const jornada: Record<Turno,string> = {
+      [Enums.Turno.SinTurno]: 'jornada',
+      [Enums.Turno.Manhana]: 'manhana',
+      [Enums.Turno.Tarde]: 'tarde',
+      [Enums.Turno.Noche]: 'noche'
     }
-    // eslint-disable-next-line
-    const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
-    const diasSeleccionados = ref([] as number[])
-    // eslint-disable-next-line
-    const horario = ref({
-      0: ['0:00', '0:00'],
-      1: ['0:00', '0:00'],
-      2: ['0:00', '0:00'],
-      3: ['0:00', '0:00'],
-      4: ['0:00', '0:00'],
-      5: ['0:00', '0:00'],
-      6: ['0:00', '0:00']
+
+    const templateHorario = [
+      ['', ''],
+      ['0:00', '0:00'],
+      ['0:00', '0:00'],
+      ['0:00', '0:00'],
+      ['0:00', '0:00'],
+      ['0:00', '0:00'],
+      ['0:00', '0:00'],
+      ['0:00', '0:00'],
+      []
+    ]
+    const horario = computed(() => {
+      if (!store.tieneHorarioTurno(props.tipoTurno)) {
+        store.actualizarHorario(props.tipoTurno, templateHorario)
+      }
+      return store.obtenerHorarioTurno(props.tipoTurno)
     })
+    const diasSeleccionados = computed({
+      get: () => {
+        return store.obtenerDiasTurno(props.tipoTurno)
+      },
+      set: (dias) => {
+        store.actualizarDiasTurno(props.tipoTurno, dias)
+      }
+    })
+
     const nombreJornada = computed(
       () => {
-        if (jornada[props.tipoJornada]) {
-          return jornada[props.tipoJornada]
+        if (jornada[props.tipoTurno]) {
+          return jornada[props.tipoTurno]
         }
         return 'jornada'
       })
 
-    //
-    const estaSeleccionado = function (dia: number) {
-      return diasSeleccionados.value.indexOf(dia) !== -1
+
+    function estaDiaSeleccionado(dia: number): boolean {
+      return diasSeleccionados.value.indexOf(dia.toString()) !== -1
     }
 
-    const manejarHorario = function (e: Event) {
-      const checkbox = e.target as HTMLInputElement
-      if (checkbox.checked) {
-        console.log('seleccionado!')
-      }
-    }
     return {
+      jornada,
       nombreJornada,
-      // seleccionarTodos,
       diasSeleccionados,
       horario,
-      estaSeleccionado,
-      manejarHorario
+      range,
+      estaDiaSeleccionado
     }
   }
 })
