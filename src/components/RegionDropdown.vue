@@ -13,10 +13,15 @@
   </select>
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { cargarRegiones, RegionInfo } from '@/services/RegionService'
 export default defineComponent({
-  props: ['region'],
+  props: {
+    region: {
+      type: Object as PropType<Region>,
+      required: true
+    }
+  },
   emits: ['update:region'],
   setup(props, context) {
     const regiones = ref<RegionInfo[]>([])
