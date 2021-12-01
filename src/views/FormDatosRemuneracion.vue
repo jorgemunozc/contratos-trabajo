@@ -2,11 +2,22 @@
   <div class="form">
     <div>
       <label for="sueldoBase">Sueldo Base</label>
-      <select name="sueldoBase" id="sueldoBase">
-        <option value="m">Mensual</option>
-        <option value="s">Semanal</option>
-        <option value="d">Diaria</option>
-        <option value="bm">Bimestral</option>
+      <select
+        id="sueldoBase"
+        name="sueldoBase"
+      >
+        <option value="m">
+          Mensual
+        </option>
+        <option value="s">
+          Semanal
+        </option>
+        <option value="d">
+          Diaria
+        </option>
+        <option value="bm">
+          Bimestral
+        </option>
       </select>
     </div>
     <h1>Periodicidad y Forma de Pago</h1>
