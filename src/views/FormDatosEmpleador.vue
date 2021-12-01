@@ -96,84 +96,82 @@ export default defineComponent({
     RegionDropdown,
     ComunaDropdown
   },
-  data() {
-    const empleador = store.state.empleador
+  setup() {
     const regionSeleccionada = computed({
-      get: () => empleador.region,
-      set: (nuevaReg) => {
-        empleador.region = nuevaReg
+      get: () => store.get('empleador', 'region'),
+      set: (nuevaReg: Region) => {
+        store.set('empleador', 'region', nuevaReg)
       }
     })
 
     const comunaSeleccionada = computed({
-      get: () => empleador.comuna,
-      set: (nuevaCom) => {
-        empleador.comuna = nuevaCom
+      get: () => store.get('empleador', 'comuna'),
+      set: (nuevaCom: Comuna) => {
+        store.set('empleador', 'comuna', nuevaCom)
       }
     })
 
     const esPersonaJuridica = computed({
       get: (): boolean => {
-        return empleador.esPersonaJuridica
+        return store.get('empleador', 'esPersonaJuridica')
       },
       set: (nuevoValor: boolean) => {
-        empleador.esPersonaJuridica = nuevoValor
+        store.set('empleador', 'esPersonaJuridica', nuevoValor)
       }
     })
 
     const rut = computed({
       get: () => {
-        if (empleador.rut) {
-          return empleador.rut
+        if (store.get('empleador', 'rut')) {
+          return store.get('empleador', 'rut')
         }
         return ''
       },
       set: (nuevoRut: string) => {
-        empleador.rut = nuevoRut
+        store.set('empleador', 'rut', nuevoRut)
       }
     })
 
     const razonSocial = computed({
       get: () => {
-        if (empleador.razonSocial) {
-          return empleador.razonSocial
+        if (store.get('empleador','razonSocial')) {
+          return store.get('empleador','razonSocial')
         }
         return ''
       },
       set: (nuevaRazon) => {
-        empleador.razonSocial = nuevaRazon
+        store.set('empleador', 'razonSocial', nuevaRazon)
       }
     })
 
     const nombRepLegal = computed({
-      get: () => empleador.nombreRepLegal,
+      get: () => store.get('empleador', 'nombreRepLegal'),
       set: (nuevoNomb) => {
-        empleador.nombreRepLegal = nuevoNomb
+        store.set('empleador', 'nombreRepLegal', nuevoNomb)
       }
     })
 
     const direccion = computed({
-      get: () => empleador.domicilio,
+      get: () => store.get('empleador','domicilio'),
       set: (nuevoDom) => {
-        empleador.domicilio = nuevoDom
+        store.set('empleador', 'domicilio', nuevoDom)
       }
     })
 
     const runRepLegal = computed({
-      get: () => empleador.rutRepLegal,
+      get: () => store.get('empleador', 'rutRepLegal'),
       set: (nuevoRut) => {
-        empleador.rutRepLegal = nuevoRut
+        store.set('empleador', 'rutRepLegal', nuevoRut)
       }
     })
 
     const cargoRepLegal = computed({
-      get: () => empleador.cargoRepLegal,
+      get: () => store.get('empleador', 'cargoRepLegal'),
       set: (nuevoCargo) => {
-        empleador.cargoRepLegal = nuevoCargo
+        store.set('empleador', 'cargoRepLegal', nuevoCargo)
       }
     })
     return {
-      empleador,
       regionSeleccionada,
       comunaSeleccionada,
       esPersonaJuridica,
