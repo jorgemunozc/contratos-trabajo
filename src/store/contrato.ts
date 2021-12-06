@@ -53,9 +53,11 @@ const store = {
   set<P extends keyof ContratoTrabajo, SP extends keyof ContratoTrabajo[P]>(prop: P, subProp: SP, value: ContratoTrabajo[P][SP]): void {
     this.state[prop][subProp] = value
   },
+
   getPropEmpleador(prop: EmpleadorKeys) : Empleador[EmpleadorKeys] {
     return this.state.empleador[prop]
   },
+
   actualizarHorario(horarioAModificar: Turno, nuevoHorario: ArregloHorario) : void {
     const copiaHorario: ArregloHorario = deepCloneArray(nuevoHorario)
     this.state.condicionesContractuales.horario[horarioAModificar] = copiaHorario
@@ -78,7 +80,7 @@ const store = {
     switch (tipoJornada) {
       case Enums.RotacionTurnos.ManTarde:
         resultado[Enums.Turno.Manhana] = horarios[Enums.Turno.Manhana]
-        resultado[Enums.Turno.Tarde] = horarios[Enums.Turno.Manhana]
+        resultado[Enums.Turno.Tarde] = horarios[Enums.Turno.Tarde]
         break;
       case Enums.RotacionTurnos.ManNoche:
         resultado[Enums.Turno.Manhana] = horarios[Enums.Turno.Manhana]
