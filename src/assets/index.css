@@ -4,7 +4,7 @@
 
 @layer components {
   .input-field {
-    @apply flex flex-col px-2
+    @apply flex flex-col px-2 relative
   }
   .input-field label {
     @apply text-left
