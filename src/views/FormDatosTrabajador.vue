@@ -134,8 +134,8 @@ export default defineComponent({
     })
 
     const direccion = computed({
-      get: () => store.get('trabajador', 'direccion'),
-      set: (nuevaDir) => { trabajador.direccion = nuevaDir }
+      get: () => store.get('trabajador', 'domicilio'),
+      set: (nuevaDir) => { trabajador.domicilio = nuevaDir }
     })
 
     const fechaNac = computed({

@@ -18,7 +18,10 @@
     </div>
     <div class="input-field">
       <label for="duracionJornada">Duración de Jornada (en horas)</label>
-      <input type="text">
+      <input
+        v-model="horasJornada"
+        type="number"
+      >
     </div>
     <div class="input-field">
       <label for="tipoJornada">Horarios y turnos</label>
@@ -27,7 +30,7 @@
         name="tipoJornada"
       >
         <option value="">
-          Elija opcion
+          Elija opción
         </option>
         <option :value="Enums.RotacionTurnos.Fijo">
           Horario fijo sin turnos
@@ -90,32 +93,20 @@ export default defineComponent({
         store.quitarHorariosQueNoSonDeJornadaActual()
       }
     })
-
+    const horasJornada = computed({
+      get: () => store.get('condicionesContractuales', 'horasJornada'),
+      set: (nuevasHoras) => {
+        store.set('condicionesContractuales', 'horasJornada', nuevasHoras)
+      }
+    })
 
     store.obtenerTipoJornada()
     return {
       jornada,
-      store,
+      horasJornada,
       turno,
       Enums
     }
   }
 })
 </script>
-<style scoped>
-.form {
-  scrollbar-color: rgb(68, 68, 68) gray;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: rgba(128, 128, 128, 0.5);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);
-}
-</style>

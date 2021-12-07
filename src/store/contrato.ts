@@ -13,7 +13,7 @@ const store = {
       comuna: {} as Comuna,
       nombreRepLegal: '',
       rutRepLegal: '',
-      cargoRepLegal: ''
+      // cargoRepLegal: ''
     },
     trabajador: {
       run: '',
@@ -23,7 +23,7 @@ const store = {
       nacionalidad: '',
       estadoCivil: Enums.EstadoCivil.Casado,
       sexo: '',
-      direccion: '',
+      domicilio: '',
       fechaNac: '',
       comuna: {} as Comuna,
       region: {} as Region
@@ -98,6 +98,11 @@ const store = {
       default:
         resultado[Enums.Turno.SinTurno] = horarios[Enums.Turno.SinTurno]
     }
+    Object.values(resultado).forEach((horario) => {
+      if (horario) {
+        horario[8].sort((a,b) => Number(a) - Number(b))
+      }
+    })
     return resultado
   },
 

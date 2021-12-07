@@ -46,7 +46,7 @@ declare interface Empleador {
   comuna: Comuna,
   nombreRepLegal: string,
   rutRepLegal: string,
-  cargoRepLegal: string
+  // cargoRepLegal: string
 }
 
 declare interface Trabajador {
@@ -57,7 +57,7 @@ declare interface Trabajador {
   nacionalidad: string,
   estadoCivil: EstadoCivil,
   sexo: string,
-  direccion: string,
+  domicilio: string,
   fechaNac: string,
   comuna: Comuna,
   region: Region

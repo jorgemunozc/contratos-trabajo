@@ -1,5 +1,7 @@
 <template>
-  <form class="form">
+  <form
+    class="form"
+  >
     <div class="flex w-full">
       <div>
         <input
@@ -30,7 +32,15 @@
         class="border"
         type="text"
         placeholder="Rut"
+        required
       />
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
+      >
+        {{ errores.rut }}
+      </small>
     </div>
     <div class="w-2/3 input-field">
       <label for="razonSocial">Razón Social o Nombre</label>
@@ -38,17 +48,38 @@
         v-model="razonSocial"
         type="text"
       >
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
+      >
+        {{ errores.razonSocial }}
+      </small>
     </div>
     <div class="w-1/3 input-field">
-      <label for="direccion">Dirección</label>
+      <label for="domicilio">Dirección</label>
       <input
-        v-model="direccion"
+        v-model="domicilio"
         type="text"
       >
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
+      >
+        {{ errores.domicilio }}
+      </small>
     </div>
     <div class="w-1/3 input-field">
       <label for="region">Región</label>
       <RegionDropdown v-model:region="regionSeleccionada" />
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
+      >
+        {{ errores.region }}
+      </small>
     </div>
     <div class="w-1/3 input-field">
       <label for="comuna">Comuna</label>
@@ -56,40 +87,55 @@
         v-model:comuna="comunaSeleccionada"
         :region="regionSeleccionada.codigo"
       />
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
+      >
+        {{ errores.comuna }}
+      </small>
     </div>
     <div class="w-full input-field">
-      <label for="nombRepLegal">Nombre Rep. Legal</label>
+      <label for="nombreRepLegal">Nombre Rep. Legal</label>
       <input
-        v-model="nombRepLegal"
+        v-model="nombreRepLegal"
         type="text"
         :disabled="!esPersonaJuridica"
       >
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
+      >
+        {{ errores.nombreRepLegal }}
+      </small>
     </div>
     <div class="w-1/3 input-field">
-      <label for="runRepLegal">RUN Rep. Legal</label>
+      <label for="rutRepLegal">RUN Rep. Legal</label>
       <input
-        v-model="runRepLegal"
+        v-model="rutRepLegal"
         type="text"
         :disabled="!esPersonaJuridica"
       >
-    </div>
-    <div class="w-2/3 input-field">
-      <label for="cargoRepLegal">Cargo Rep. Legal (Opcional)</label>
-      <input
-        v-model="cargoRepLegal"
-        type="text"
-        :disabled="!esPersonaJuridica"
+      <small
+        class="absolute bg-black text-white
+          top-full px-2 text-xs
+        "
       >
+        {{ errores.rutRepLegal }}
+      </small>
     </div>
   </form>
+  {{}}
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, reactive } from 'vue'
 
 import store from '@/store/contrato'
 import RegionDropdown from '@/components/RegionDropdown.vue'
 import ComunaDropdown from '@/components/ComunaDropdown.vue'
+import { onBeforeRouteLeave } from 'vue-router';
 
 export default defineComponent({
   components: {
@@ -144,7 +190,7 @@ export default defineComponent({
       }
     })
 
-    const nombRepLegal = computed({
+    const nombreRepLegal = computed({
       get: () => store.get('empleador', 'nombreRepLegal'),
       set: (nuevoNomb) => {
         store.set('empleador', 'nombreRepLegal', nuevoNomb)
@@ -158,29 +204,65 @@ export default defineComponent({
       }
     })
 
-    const runRepLegal = computed({
+    const rutRepLegal = computed({
       get: () => store.get('empleador', 'rutRepLegal'),
       set: (nuevoRut) => {
         store.set('empleador', 'rutRepLegal', nuevoRut)
       }
     })
 
-    const cargoRepLegal = computed({
-      get: () => store.get('empleador', 'cargoRepLegal'),
-      set: (nuevoCargo) => {
-        store.set('empleador', 'cargoRepLegal', nuevoCargo)
-      }
+    const errores: {[key: string]: string} = reactive({
+      rut: '',
+      razonSocial: '',
+      domicilio: '',
+      region: '',
+      comuna: '',
+      nombreRepLegal: '',
+      rutRepLegal: '',
     })
+
+    function limpiarErrores(): void {
+      Object.keys(errores).forEach((key) => errores[key] = '')
+    }
+
+    function esInformacionValida(): boolean {
+      limpiarErrores()
+      let numeroCamposInvalidos = 0
+      const camposInvalidos : string[] = []
+      Object.entries(store.state.empleador).forEach(([campo, valorCampo]) => {
+        if (['rutRepLegal', 'nombreRepLegal'].includes(campo) && !esPersonaJuridica.value) {
+          return
+        }
+        if (typeof valorCampo === 'object' && !Object.entries(valorCampo).length) {
+          numeroCamposInvalidos++;
+          camposInvalidos.push(campo)
+          errores[campo] = 'Seleccione una opción'
+          console.log(errores[campo])
+        } else if (campo !== 'esPersonaJuridica' && !valorCampo){
+          numeroCamposInvalidos++
+          errores[campo] = 'Ingrese un valor'
+          camposInvalidos.push(campo)
+        }
+      })
+      console.log(`campos invalidos: ${numeroCamposInvalidos}`)
+      console.log(`campos: ${camposInvalidos.toString()}`)
+      return numeroCamposInvalidos === 0
+    }
+
+    onBeforeRouteLeave((to, from) => {
+      return esInformacionValida()
+    })
+
     return {
       regionSeleccionada,
       comunaSeleccionada,
       esPersonaJuridica,
       rut,
       razonSocial,
-      direccion,
-      nombRepLegal,
-      runRepLegal,
-      cargoRepLegal
+      domicilio: direccion,
+      nombreRepLegal,
+      rutRepLegal,
+      errores
     }
   }
 })
