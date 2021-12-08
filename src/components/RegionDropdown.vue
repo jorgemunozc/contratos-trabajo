@@ -14,7 +14,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
-import { cargarRegiones, RegionInfo } from '@/services/RegionService'
+import { cargarRegiones } from '@/services/RegionService'
 export default defineComponent({
   props: {
     region: {
@@ -24,7 +24,7 @@ export default defineComponent({
   },
   emits: ['update:region'],
   setup(props, context) {
-    const regiones = ref<RegionInfo[]>([])
+    const regiones = ref<Region[]>([])
     const loadRegiones = async function () {
       regiones.value = await cargarRegiones()
     }
