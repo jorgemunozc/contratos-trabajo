@@ -1,5 +1,5 @@
 <template>
-  <div class="w-32">
+  <div class="w-44">
     <div class="w-full border-b-2" />
     <div>
       {{ esEmpleador? 'FIRMA EMPLEADOR': 'FIRMA TRABAJADOR' }}
