@@ -27,11 +27,11 @@ export default defineComponent({
     }
   },
   emits: ['update:comuna'],
-  setup(props, context) {
+  setup(props, { emit }) {
     const selectedCom = computed({
       get: () => props.comuna,
       set: (nuevaComuna) => {
-        context.emit('update:comuna', nuevaComuna)
+        emit('update:comuna', nuevaComuna)
       }
     })
     const comunas = ref<Comuna[]>([])
