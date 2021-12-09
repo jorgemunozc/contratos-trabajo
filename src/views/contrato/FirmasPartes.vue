@@ -1,5 +1,5 @@
 <template>
-  <section class="flex">
+  <section class="flex  items-end justify-evenly mt-4 h-44">
     <FirmaBase
       :rut="rutEmpleador"
     />
