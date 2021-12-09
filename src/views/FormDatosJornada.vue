@@ -1,26 +1,46 @@
 <template>
   <div class="form overflow-y-auto content-start">
-    <div>
-      <label for="jornadaExenta">
+    <div class="flex gap-x-4">
+      <label
+        for="jornadaEspecial"
+        class="w-2/3"
+      >
         El Trabajador se encuentra excluido de la limitación de jornada de trabajo conforme al Artículo 22
         Inciso 2° del Código del Trabajo
       </label>
-      <input
-        type="radio"
-        name="jornadaExtra"
-        value="1"
-      >SI
-      <input
-        type="radio"
-        name="jornadaExtra"
-        value="0"
-      >NO
+      <div>
+        <label
+          for="si"
+          class="mx-2"
+        >SI</label>
+        <input
+          id="si"
+          v-model="jornadaEspecial"
+          type="radio"
+          name="jornadaEspecial"
+          :value="true"
+        >
+      </div>
+      <div>
+        <label
+          for="no"
+          class="mx-2"
+        >NO</label>
+        <input
+          id="no"
+          v-model="jornadaEspecial"
+          type="radio"
+          name="jornadaEspecial"
+          :value="false"
+        >
+      </div>
     </div>
     <div class="input-field">
       <label for="duracionJornada">Duración de Jornada (en horas)</label>
       <input
         v-model="horasJornada"
         type="number"
+        :disabled="jornadaEspecial"
       >
     </div>
     <div class="input-field">
@@ -28,6 +48,7 @@
       <select
         v-model="jornada"
         name="tipoJornada"
+        :disabled="jornadaEspecial"
       >
         <option value="">
           Elija opción
@@ -73,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import TablaHorario from '@/components/TablaHorario.vue'
 import store from '@/store/contrato'
 import * as Enums from '@/enums'
@@ -84,6 +105,8 @@ export default defineComponent({
   },
   setup() {
     const turno = Enums.Turno
+
+    const jornadaEspecial = ref(store.esJornadaArticulo22())
     const jornada = computed<RotacionTurnos | ''>({
       get: () => {
        return store.obtenerTipoJornada()
@@ -100,12 +123,26 @@ export default defineComponent({
       }
     })
 
+    function resetearCampos() {
+      horasJornada.value = 0
+      jornada.value = ''
+    }
+
+    watch(
+      (jornadaEspecial),
+      (esJornadaEspecial) => {
+        if (esJornadaEspecial) {
+          resetearCampos()
+        }
+      }
+    )
     store.obtenerTipoJornada()
     return {
       jornada,
       horasJornada,
       turno,
-      Enums
+      Enums,
+      jornadaEspecial
     }
   }
 })
