@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <p>
     <span class="font-bold">SEXTO</span> -
     <template v-if="true">
       El presente contrato tendrá el carácter de contrato indefinido.
@@ -12,5 +12,5 @@
       El presente contrato durará hasta el _______ y
       solo podrá ponérsele término en conformidad a la legislación vigente.
     </template>
-  </section>
+  </p>
 </template>

@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <p>
     <span class="font-bold">CUARTO</span> -
-    {{ DENOMINACION_EMPLEADOR }} se compromente a remunerar los servicios
-    de {{ DENOMINACION_TRABAJADOR }} con un sueldo mensual de
+    "{{ DENOMINACION_EMPLEADOR }}" se compromente a remunerar los servicios
+    de "{{ DENOMINACION_TRABAJADOR }}" con un sueldo mensual de
     ${{ sueldoBase }} que será liquidado y pagado,
     por períodos vencidos y en forma proporcional a los días trabajados.
     De la remuneración se deducirán los impuestos; las cotizaciones de
@@ -10,7 +10,7 @@
     todas aquellas deducciones, con los topes legales señalados en el
     artículo 54 y siguientes del Código del Trabajo, que el trabajador
     haya autorizado de manera expresa mediante carta autorización firmada.
-  </section>
+  </p>
 </template>
 <script lang="ts">
 import store from '@/store/contrato';

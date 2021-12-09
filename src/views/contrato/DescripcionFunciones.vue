@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <p>
     <span class="font-bold">PRIMERO</span> -
-    De la naturaleza de los servicios. {{ DENOMINACION_TRABAJADOR }} se compromete
+    De la naturaleza de los servicios. "{{ DENOMINACION_TRABAJADOR }}" se compromete
     a desempeñar el cargo de: {{ condicionesContrato.cargo }}
     <template v-if="condicionesContrato.funciones.length">
       Dentro de sus funciones deberá cumplir lo siguiente:
@@ -12,7 +12,7 @@
         <li>{{ funcion }}</li>
       </ul>
     </template>
-  </section>
+  </p>
 </template>
 
 <script lang="ts">

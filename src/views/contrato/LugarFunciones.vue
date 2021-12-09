@@ -1,13 +1,13 @@
 <template>
-  <section>
+  <p>
     <span class="font-bold">SEGUNDO</span> -
     Del lugar de prestación de los servicios.
-    {{ DENOMINACION_TRABAJADOR }} desempeñará sus funciones en las instalaciones de
-    {{ DENOMINACION_EMPLEADOR }} ubicadas en el domicilio:
+    "{{ DENOMINACION_TRABAJADOR }}" desempeñará sus funciones en las instalaciones de
+    "{{ DENOMINACION_EMPLEADOR }}" ubicadas en el domicilio:
     {{ condicionesContrato.direccionLabores }},
     comuna {{ condicionesContrato.comunaLabores.nombre }},
     Región {{ condicionesContrato.regionLabores.nombre }}.
-  </section>
+  </p>
 </template>
 <script lang="ts">
 import store from '@/store/contrato';
