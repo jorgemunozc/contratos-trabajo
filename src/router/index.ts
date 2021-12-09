@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
-const FormDatosRemuneracion = () => import('@/views/FormDatosRemuneracion.vue')
+const FormDatosMisc= () => import('@/views/FormDatosMisc.vue')
 const FormDatosEmpleador = () => import('@/views/FormDatosEmpleador.vue')
 const FormDatosTrabajador = () => import('@/views/FormDatosTrabajador.vue')
 const FormDatosServicios = () => import('@/views/FormDatosServicios.vue')
@@ -14,7 +14,7 @@ const rutasPasosLlenadoForm = [
   FormDatosTrabajador,
   FormDatosServicios,
   FormDatosJornada,
-  FormDatosRemuneracion,
+  FormDatosMisc,
   ContratoPreview
 ]
 const routes: Array<RouteRecordRaw> = [
@@ -26,7 +26,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/contrato-trabajo',
     name: 'Home',
     component: GenerarContrato,
-    children: crearRutasPasos()
+    children: [
+      {
+        path: '',
+        redirect: '/contrato-trabajo/1'
+      },
+      ...crearRutasPasos()
+    ]
   },
   {
     path: '/test',
