@@ -1,5 +1,5 @@
 <template>
-  <table class="border bg-gray-300 w-full text-sm">
+  <table class="border bg-gray-300 w-full text-sm mb-4">
     <thead>
       <tr>
         <th colspan="8">
@@ -86,19 +86,6 @@
       </tr>
     </tbody>
   </table>
-  <!-- <div>
-    Dias seleccionados: {{ diasSeleccionados }} <br />
-    horario:
-    <div
-      v-for="(dia, index) in horario"
-      :key="index"
-    >
-      {{ dia }}
-    </div>
-  </div> -->
-  <!-- <div>
-    {{horario}}
-  </div> -->
 </template>
 
 <script lang="ts">
