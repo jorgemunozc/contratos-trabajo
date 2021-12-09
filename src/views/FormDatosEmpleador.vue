@@ -228,30 +228,25 @@ export default defineComponent({
     function esInformacionValida(): boolean {
       limpiarErrores()
       let numeroCamposInvalidos = 0
-      const camposInvalidos : string[] = []
       Object.entries(store.state.empleador).forEach(([campo, valorCampo]) => {
         if (['rutRepLegal', 'nombreRepLegal'].includes(campo) && !esPersonaJuridica.value) {
           return
         }
         if (typeof valorCampo === 'object' && !Object.entries(valorCampo).length) {
           numeroCamposInvalidos++;
-          camposInvalidos.push(campo)
           errores[campo] = 'Seleccione una opción'
           console.log(errores[campo])
         } else if (campo !== 'esPersonaJuridica' && !valorCampo){
           numeroCamposInvalidos++
           errores[campo] = 'Ingrese un valor'
-          camposInvalidos.push(campo)
         }
       })
-      console.log(`campos invalidos: ${numeroCamposInvalidos}`)
-      console.log(`campos: ${camposInvalidos.toString()}`)
       return numeroCamposInvalidos === 0
     }
 
-    onBeforeRouteLeave((to, from) => {
-      return esInformacionValida()
-    })
+    // onBeforeRouteLeave(() => {
+    //   return esInformacionValida()
+    // })
 
     return {
       regionSeleccionada,
