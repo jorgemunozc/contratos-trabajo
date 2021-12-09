@@ -4,6 +4,7 @@ import * as Enums from '@/enums'
 
 const store = {
   state: reactive<ContratoTrabajo>({
+    comunaCelebracion: {} as Comuna,
     empleador: {
       esPersonaJuridica: false,
       razonSocial: '',
@@ -29,6 +30,7 @@ const store = {
       region: {} as Region
     },
     condicionesContractuales: {
+      fechaIngreso: '',
       sueldoBase: 0,
       periodicidadSueldo: '',
       cargo: '',
@@ -46,7 +48,7 @@ const store = {
       }
     }
   }),
-  get<P extends keyof ContratoTrabajo, SP extends keyof ContratoTrabajo[P]>(prop: P, subProp: SP): ContratoTrabajo[P][SP]{
+  get<P extends keyof Omit<ContratoTrabajo, 'comunaCelebracion'>, SP extends keyof ContratoTrabajo[P]>(prop: P, subProp: SP): ContratoTrabajo[P][SP]{
     return this.state[prop][subProp]
   },
 
@@ -182,26 +184,31 @@ const store = {
     for (const key of keysRotaciones) {
       switch (key) {
         case Enums.RotacionTurnos.Fijo:
-          descripciones[key] = 'Horario fijo y sin turnos'
+          descripciones[key] = 'horario fijo y sin turnos'
           break;
         case Enums.RotacionTurnos.ManTarde:
-          descripciones[key] = 'Turnos rotativos de mañana y tarde'
+          descripciones[key] = 'turnos rotativos de mañana y tarde'
           break;
         case Enums.RotacionTurnos.ManNoche:
-          descripciones[key] = 'Turnos rotativos de mañana y noche'
+          descripciones[key] = 'turnos rotativos de mañana y noche'
           break;
         case Enums.RotacionTurnos.TardeNoche:
-          descripciones[key] = 'Turnos rotativos de tarde y noche'
+          descripciones[key] = 'turnos rotativos de tarde y noche'
           break;
         case Enums.RotacionTurnos.ManTardeNoche:
-          descripciones[key] = 'Turnos rotativos de mañana, tarde y noche'
+          descripciones[key] = 'turnos rotativos de mañana, tarde y noche'
           break;
         default:
-          descripciones[Enums.RotacionTurnos.Reglamento] = 'Horarios de acuerdo a Reglamento Interno'
+          descripciones[Enums.RotacionTurnos.Reglamento] = 'horarios de acuerdo a Reglamento Interno'
           break;
       }
     }
     return descripciones[jornada]
+  },
+
+  esJornadaArticulo22(): boolean {
+    return this.state.condicionesContractuales.horasJornada === 0
+      && this.state.condicionesContractuales.jornada === null
   }
 }
 

@@ -22,6 +22,7 @@ declare enum RotacionTurnos {
 }
 
 declare interface ContratoTrabajo {
+  comunaCelebracion: Comuna,
   empleador: Empleador,
   trabajador: Trabajador,
   condicionesContractuales: CondicionesContractuales
@@ -64,6 +65,7 @@ declare interface Trabajador {
 }
 
 declare interface CondicionesContractuales {
+  fechaIngreso: string,
   sueldoBase: number,
   periodicidadSueldo: string,
   cargo: string,
